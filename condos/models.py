@@ -13,10 +13,10 @@ class Condos(models.Model):
     street_name = models.CharField(max_length=64, blank=True)
     street_address = models.CharField(max_length=64, blank=True)
     district = models.CharField(max_length=64, blank=True, default=None)
-    Province = models.CharField(max_length=64, blank=True)
+    province = models.CharField(max_length=64, blank=True)
     zip_code = models.IntegerField()
     note = models.CharField(max_length=64, blank=True, default=None)
-    description = models.CharField(max_length=100,blank=True)
+    description = models.CharField(max_length=100, blank=True)
     amenities = models.CharField(max_length=64, blank=True, default=None)
     building_type_id = models.IntegerField(default=None)
     condo_type_id = models.IntegerField()
@@ -35,7 +35,7 @@ class Condos(models.Model):
     modified_date = models.DateTimeField(default=None)
     created_by_id = models.IntegerField(default=None)
     modified_by_id = models.IntegerField(default=None)
-    eStatus = models.CharField(
+    e_status = models.CharField(
         choices=E_STATUS_CHOICES,
         default='Active',
         max_length=10

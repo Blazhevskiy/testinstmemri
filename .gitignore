@@ -51,3 +51,7 @@ Thumbs.db
 # Databases
 *.sqlite3
 
+# credentials
+credentials.json
+token.json
+
