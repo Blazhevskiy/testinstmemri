@@ -16,13 +16,15 @@ from api.people_api.people_api import people_api
     permission_classes=(AllowAny,),
 )
 def import_condos(request):
-    list_all_data = people_api.run()
-    for condo_data in list_all_data:
-        condo_data_dict = {'condo_name': condo_data[0]}
-        condo_serializer = CondoSerializer(data=condo_data_dict)
-        condo_serializer.is_valid(raise_exception=True)
+    condos = people_api.run()
+    data = []
+    for condo in condos:
+        if "names" in condo:
+            data.append({'displayName': condo['names'][0]['displayName']})
+    condo_serializer = CondoSerializer(data=data, many=True)
+    condo_serializer.is_valid(raise_exception=True)
 
-        with transaction.atomic():
-            condo = condo_serializer.save()
+    with transaction.atomic():
+        condo = condo_serializer.save()
 
     return Response(data=condo)

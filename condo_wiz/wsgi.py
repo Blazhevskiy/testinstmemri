@@ -1,5 +1,5 @@
 """
-WSGI config for CondoWiz project.
+WSGI config for condo_wiz project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'CondoWiz.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'condo_wiz.settings')
 
 application = get_wsgi_application()

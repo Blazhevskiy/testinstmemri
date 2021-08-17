@@ -32,16 +32,12 @@ class People_API():
         results = service.people().connections().list(
             resourceName='people/me',
             personFields='names,emailAddresses,biographies,organizations,photos,urls,addresses,clientData').execute()
-        connections = results.get('connections', [])
+        condos_data = self.prepare_contacts_data(results.get('connections', []))
+        return condos_data
+
+    def prepare_contacts_data(self, raw_data):
         data = []
-        for person in connections:
-            names, emails, biographies, organizations, photos, urls, addresses, client_data = person.get('names', []), person.get('emailAddresses', []), person.get('biographies'), person.get('organizations'), person.get('photos', []), person.get('urls', []), person.get('addresses', []), person.get('clientData', [])
-            if names:
-                user_data = []
-                #TODO Get user fields
-                name = names[0].get('displayName')
-                user_data.extend([name])
-                data.append(user_data)
+        # TODO prepare data for serializer
         return data
 
     def run(self):

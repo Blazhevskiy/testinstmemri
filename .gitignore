@@ -54,7 +54,7 @@ Thumbs.db
 # credentials
 credentials.json
 token.json
-
+venv/
 .idea
 __pycache__
 
