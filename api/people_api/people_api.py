@@ -39,8 +39,8 @@ class People_API():
             if names:
                 user_data = []
                 #TODO Get user fields
-                name, email, biography, organization = names[0].get('displayName')
-                user_data.extend([name, email, biography, organization])
+                name = names[0].get('displayName')
+                user_data.extend([name])
                 data.append(user_data)
         return data
 

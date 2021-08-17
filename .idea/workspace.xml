@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1bd64e2c-bbdc-4c77-be42-eba1bb9d7a19" name="Changes" comment="" />
+    <list default="true" id="1bd64e2c-bbdc-4c77-be42-eba1bb9d7a19" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CondoWiz/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/CondoWiz/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CondoWiz/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/CondoWiz/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/people_api/people_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/people_api/people_api.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/condos/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/condos/views.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -77,7 +83,7 @@
       <workItem from="1628597881115" duration="1974000" />
       <workItem from="1628607336651" duration="1164000" />
       <workItem from="1628805828039" duration="2027000" />
-      <workItem from="1629192770947" duration="3209000" />
+      <workItem from="1629192770947" duration="3664000" />
     </task>
     <servers />
   </component>
