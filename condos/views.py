@@ -19,7 +19,6 @@ def import_condos(request):
     list_all_data = people_api.run()
     for condo_data in list_all_data:
         condo_data_dict = {'condo_name': condo_data[0]}
-        print(condo_data_dict)
         condo_serializer = CondoSerializer(data=condo_data_dict)
         condo_serializer.is_valid(raise_exception=True)
 
