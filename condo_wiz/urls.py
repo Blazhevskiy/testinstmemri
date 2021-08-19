@@ -15,9 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-import condos.views
+from condos import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/import', condos.views.import_condos),
+    path('api/v1/import', views.import_condos),
 ]

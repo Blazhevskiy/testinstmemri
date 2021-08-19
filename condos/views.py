@@ -4,8 +4,8 @@ from rest_framework.decorators import action
 from .serializer import CondoSerializer
 from django.db import transaction
 from rest_framework.response import Response
+from django.http import JsonResponse
 from api.people_api.people_api import people_api
-# Create your views here.
 
 @action(
     detail=False,
@@ -17,14 +17,10 @@ from api.people_api.people_api import people_api
 )
 def import_condos(request):
     condos = people_api.run()
-    data = []
-    for condo in condos:
-        if "names" in condo:
-            data.append({'displayName': condo['names'][0]['displayName']})
-    condo_serializer = CondoSerializer(data=data, many=True)
-    condo_serializer.is_valid(raise_exception=True)
+#    condo_serializer = CondoSerializer(data=condos, many=True)
+#    condo_serializer.is_valid(raise_exception=True)
 
-    with transaction.atomic():
-        condo = condo_serializer.save()
+#    with transaction.atomic():
+#        condo = condo_serializer.save()
 
-    return Response(data=condo)
+    return JsonResponse({'data': condos})

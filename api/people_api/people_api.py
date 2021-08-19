@@ -4,6 +4,7 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
+import re
 
 class People_API():
     SCOPES = ['https://www.googleapis.com/auth/contacts.readonly']
@@ -31,13 +32,36 @@ class People_API():
     def get_contacts(self, service):
         results = service.people().connections().list(
             resourceName='people/me',
-            personFields='names,emailAddresses,biographies,organizations,photos,urls,addresses,clientData').execute()
+            personFields='addresses,ageRanges,biographies,birthdays,calendarUrls,clientData,coverPhotos,emailAddresses,events,externalIds,genders,imClients,interests,locales,locations,memberships,metadata,miscKeywords,names,nicknames,occupations,organizations,phoneNumbers,photos,relations,sipAddresses,skills,urls,userDefined').execute()
         condos_data = self.prepare_contacts_data(results.get('connections', []))
         return condos_data
 
     def prepare_contacts_data(self, raw_data):
         data = []
-        # TODO prepare data for serializer
+        for condo_data in raw_data:
+            name = condo_data['names'][0]['displayName']
+            picture = condo_data['photos'][0]['url']
+            street_name = condo_data['addresses'][0]['streetAddress']
+            street_address = condo_data['addresses'][0]['formattedValue'].replace('\n', ' ')
+            district = condo_data['addresses'][0]['region']
+            province = condo_data['addresses'][0]['city']
+            zip_code = condo_data['addresses'][0]['postalCode']
+            note = condo_data['biographies'][0]['value']
+            description = condo_data['biographies'][0]['value']
+            #amenities
+            condo_corp_match = re.search("Condo Corp: (.*)", description)[0].split(' ')
+            condo_corp = condo_corp_match[2]
+            data.append({'displayName': name,
+                         'picture': picture,
+                         'street_name': street_name,
+                         'street_address': street_address,
+                         'district': district,
+                         'province': province,
+                         'zip_code': zip_code,
+                         'note': note,
+                         'description': description,
+                         'condo_corp': condo_corp,
+                         })
         return data
 
     def run(self):

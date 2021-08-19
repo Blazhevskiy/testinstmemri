@@ -8,7 +8,7 @@ class Condos(models.Model):
 
     template_id = models.IntegerField()
     condo_name = models.CharField(max_length=64, blank=True)
-    picture = models.CharField(max_length=64, blank=True, default=None)
+    picture = models.CharField(max_length=100, blank=True, default=None)
     location_id = models.IntegerField()
     street_name = models.CharField(max_length=64, blank=True)
     street_address = models.CharField(max_length=64, blank=True)
@@ -16,7 +16,7 @@ class Condos(models.Model):
     province = models.CharField(max_length=64, blank=True)
     zip_code = models.IntegerField()
     note = models.CharField(max_length=64, blank=True, default=None)
-    description = models.CharField(max_length=100, blank=True)
+    description = models.CharField(max_length=500, blank=True)
     amenities = models.CharField(max_length=64, blank=True, default=None)
     building_type_id = models.IntegerField(default=None)
     condo_type_id = models.IntegerField()
