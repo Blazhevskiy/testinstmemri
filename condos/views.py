@@ -17,10 +17,10 @@ from api.people_api.people_api import people_api
 )
 def import_condos(request):
     condos = people_api.run()
-#    condo_serializer = CondoSerializer(data=condos, many=True)
-#    condo_serializer.is_valid(raise_exception=True)
+    condo_serializer = CondoSerializer(data=condos, many=True)
+    condo_serializer.is_valid(raise_exception=True)
 
-#    with transaction.atomic():
-#        condo = condo_serializer.save()
+    with transaction.atomic():
+        condo = condo_serializer.save()
 
     return JsonResponse({'data': condos})

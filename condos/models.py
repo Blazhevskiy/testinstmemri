@@ -3,21 +3,20 @@ from django.db import models
 class Condos(models.Model):
     E_STATUS_CHOICES = (('a', 'Active'),
                         ('i', 'Inactive'),
-                        ('d', 'Deleted')
-                    )
+                        ('d', 'Deleted'))
 
     template_id = models.IntegerField()
     condo_name = models.CharField(max_length=64, blank=True)
-    picture = models.CharField(max_length=100, blank=True, default=None)
+    picture = models.CharField(max_length=500, blank=True, default=None)
     location_id = models.IntegerField()
     street_name = models.CharField(max_length=64, blank=True)
     street_address = models.CharField(max_length=64, blank=True)
     district = models.CharField(max_length=64, blank=True, default=None)
     province = models.CharField(max_length=64, blank=True)
-    zip_code = models.IntegerField()
-    note = models.CharField(max_length=64, blank=True, default=None)
-    description = models.CharField(max_length=500, blank=True)
-    amenities = models.CharField(max_length=64, blank=True, default=None)
+    zip_code = models.CharField(max_length=64)
+    note = models.CharField(max_length=2000, blank=True, default=None)
+    description = models.CharField(max_length=2000, blank=True)
+    amenities = models.CharField(max_length=500, blank=True, default=None)
     building_type_id = models.IntegerField(default=None)
     condo_type_id = models.IntegerField()
     condo_corp = models.CharField(max_length=64, blank=True)

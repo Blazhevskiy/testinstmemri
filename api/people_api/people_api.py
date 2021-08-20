@@ -4,7 +4,7 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
-import re
+from datetime import datetime
 
 class People_API():
     SCOPES = ['https://www.googleapis.com/auth/contacts.readonly']
@@ -36,9 +36,43 @@ class People_API():
         condos_data = self.prepare_contacts_data(results.get('connections', []))
         return condos_data
 
+    def parse_description(self, description):
+        head, condo_description, body, bottom = description.split('\n\n')
+        params = []
+        building_info = {}
+        for head in head.split('\n'):
+            if ":" not in head:
+                params.append(head)
+            else:
+                key, value = head.split(':')
+                building_info[key] = value.strip()
+        amenities = body.split('\n')[1:]
+        str1 = ""
+        for ele in amenities:
+            str1 += ',' + ele
+        amenities = str1[1:]
+        condo_data = {'params': params,
+                      'building_info': building_info,
+                      'description': condo_description,
+                      'amenities': amenities}
+
+        # Change string date to datetime
+        data = condo_data.get('building_info')
+        completed_date = data.get('Date Completed')
+        if completed_date:
+            completed_date = datetime.strptime(condo_data['building_info']['Date Completed'], '%B %Y')
+            condo_data['building_info']['Date Completed'] = completed_date
+        else:
+            pass
+
+        return condo_data
+
     def prepare_contacts_data(self, raw_data):
         data = []
         for condo_data in raw_data:
+            condo_description = condo_data['biographies'][0]['value']
+            parse_condo_description = self.parse_description(condo_description)
+
             name = condo_data['names'][0]['displayName']
             picture = condo_data['photos'][0]['url']
             street_name = condo_data['addresses'][0]['streetAddress']
@@ -46,11 +80,13 @@ class People_API():
             district = condo_data['addresses'][0]['region']
             province = condo_data['addresses'][0]['city']
             zip_code = condo_data['addresses'][0]['postalCode']
-            note = condo_data['biographies'][0]['value']
+            note = parse_condo_description['description']
             description = condo_data['biographies'][0]['value']
-            #amenities
-            condo_corp_match = re.search("Condo Corp: (.*)", description)[0].split(' ')
-            condo_corp = condo_corp_match[2]
+            condo_corp = parse_condo_description['building_info']['Condo Corp']
+            amenities = parse_condo_description['amenities']
+            floors = parse_condo_description['building_info']['Floors']
+            units = parse_condo_description['building_info']['Units']
+            data_completed = parse_condo_description['building_info']['Date Completed']
             data.append({'displayName': name,
                          'picture': picture,
                          'street_name': street_name,
@@ -60,7 +96,12 @@ class People_API():
                          'zip_code': zip_code,
                          'note': note,
                          'description': description,
-                         'condo_corp': condo_corp,
+                         'amenities': amenities,
+                         'condo_corp': int(condo_corp),
+                         'floors': int(floors),
+                         'units': int(units),
+                         'date_completed': data_completed,
+                         'view_floor_plans': "{'selected_pdf': ' ', 'all_pdf': []}"
                          })
         return data
 
