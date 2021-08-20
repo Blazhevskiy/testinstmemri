@@ -8,7 +8,7 @@ BATCH_SIZE = 500
 class CondoSerializer(serializers.Serializer):
     displayName = serializers.CharField(source='condos_name', max_length=64, required=True)
     picture = serializers.CharField(max_length=500, default=None)
-    location_id = serializers.IntegerField()
+    location_id = serializers.IntegerField(required=False)
     street_name = serializers.CharField(max_length=64, required=True)
     street_address = serializers.CharField(max_length=64, required=True)
     district = serializers.CharField(max_length=64, default=None)
@@ -18,14 +18,14 @@ class CondoSerializer(serializers.Serializer):
     description = serializers.CharField(max_length=2000, required=True)
     amenities = serializers.CharField(max_length=500, default=None)
     building_type_id = serializers.IntegerField(default=None)
-    condo_type_id = serializers.IntegerField()
+    condo_type_id = serializers.IntegerField(required=False)
     condo_corp = serializers.CharField(max_length=64, required=True)
     floors = serializers.IntegerField()
     units = serializers.IntegerField()
     builder_id = serializers.IntegerField(default=None)
     architect_id = serializers.IntegerField(default=None)
     interior_designer_id = serializers.IntegerField(default=None)
-    date_completed = serializers.DateTimeField(default=None)
+    date_completed = serializers.DateTimeField(required=False)
     pm_id = serializers.IntegerField(default=None)
     developer = serializers.CharField(max_length=64, default=None)
     send_email = serializers.CharField(max_length=64, default=None)
@@ -43,6 +43,8 @@ class CondoSerializer(serializers.Serializer):
             return value
 
     def create(self, validated_data):
-        condos_to_create = [Condos(**condo) for condo in validated_data]
-        Condos.objects.bulk_create(condos_to_create, batch_size=BATCH_SIZE)
-        return True
+#        condos_to_create = [Condos(**validated_data) for condo in validated_data]
+#        Condos.objects.bulk_create(Condos(**validated_data), batch_size=BATCH_SIZE)
+        condo = Condos(**validated_data)
+        condo.save()
+        return condo
