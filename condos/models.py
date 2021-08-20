@@ -3,9 +3,9 @@ from django.db import models
 
 class CondoType(models.Model):
     E_STATUS_CHOICES = (
-        ('a', 'Active'),
-        ('i', 'Inactive'),
-        ('d', 'Deleted'),
+        ("a", "Active"),
+        ("i", "Inactive"),
+        ("d", "Deleted"),
     )
     condo_type = models.CharField(max_length=64, blank=True)
 
@@ -13,18 +13,14 @@ class CondoType(models.Model):
     modified_date = models.DateField()
     create_by = models.IntegerField(default=None)
     modified_by = models.IntegerField(default=None)
-    e_status = models.CharField(
-        choices=E_STATUS_CHOICES,
-        default='Active',
-        max_length=10
-    )
+    e_status = models.CharField(choices=E_STATUS_CHOICES, default="Active", max_length=10)
 
 
 class Address(models.Model):
     E_STATUS_CHOICES = (
-        ('a', 'Active'),
-        ('i', 'Inactive'),
-        ('d', 'Deleted'),
+        ("a", "Active"),
+        ("i", "Inactive"),
+        ("d", "Deleted"),
     )
 
     city = models.CharField(max_length=64, blank=True, null=True)
@@ -34,13 +30,9 @@ class Address(models.Model):
     street_address = models.CharField(max_length=64, blank=True, null=True)
     district = models.CharField(max_length=64, blank=True, null=True)
     zip_code = models.CharField(max_length=64, blank=True, null=True)
-    condo = models.ForeignKey('Condo', related_name='address', on_delete=models.CASCADE)
+    condo = models.ForeignKey("Condo", related_name="address", on_delete=models.CASCADE)
 
-    e_status = models.CharField(
-        choices=E_STATUS_CHOICES,
-        default='Active',
-        max_length=10
-    )
+    e_status = models.CharField(choices=E_STATUS_CHOICES, default="Active", max_length=10)
 
     def __str__(self):
         return self.street_address
@@ -54,7 +46,7 @@ class Amenity(models.Model):
     name = models.CharField(max_length=64, unique=True)
 
     class Meta:
-        ordering = ['name']
+        ordering = ["name"]
 
     def __str__(self):
         return self.name
@@ -62,19 +54,19 @@ class Amenity(models.Model):
 
 class Email(models.Model):
     email = models.EmailField()
-    condo = models.ForeignKey('Condo', related_name='email', on_delete=models.CASCADE)
+    condo = models.ForeignKey("Condo", related_name="email", on_delete=models.CASCADE)
 
 
 class Phone(models.Model):
     phone_number = models.CharField(max_length=18)
     phone_number_canonical = models.CharField(max_length=18)
-    condo = models.ForeignKey('Condo', related_name='phone', on_delete=models.CASCADE)
+    condo = models.ForeignKey("Condo", related_name="phone", on_delete=models.CASCADE)
 
 
 class Organization(models.Model):
     name = models.CharField(max_length=32, null=True, blank=True)
     title = models.CharField(max_length=32, null=True, blank=True)
-    condo = models.ForeignKey('Condo', related_name='organization', on_delete=models.CASCADE)
+    condo = models.ForeignKey("Condo", related_name="organization", on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.title} {self.name}"
@@ -82,9 +74,9 @@ class Organization(models.Model):
 
 class Condo(models.Model):
     E_STATUS_CHOICES = (
-        ('a', 'Active'),
-        ('i', 'Inactive'),
-        ('d', 'Deleted'),
+        ("a", "Active"),
+        ("i", "Inactive"),
+        ("d", "Deleted"),
     )
 
     condo_name = models.CharField(max_length=64)
@@ -105,11 +97,7 @@ class Condo(models.Model):
 
     modified_date = models.DateTimeField(default=None)
 
-    e_status = models.CharField(
-        choices=E_STATUS_CHOICES,
-        default='Active',
-        max_length=10
-    )
+    e_status = models.CharField(choices=E_STATUS_CHOICES, default="Active", max_length=10)
 
     def save(self, *args, **kwargs):
         self.clean()

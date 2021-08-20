@@ -7,10 +7,10 @@ from .models import Condo, Address, Amenity, Email, Phone, Organization
 class ModelAddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = Address
-        fields = '__all__'
+        fields = "__all__"
 
     def to_internal_value(self, data):
-        data['condo'] = self.context.get('condo')
+        data["condo"] = self.context.get("condo")
         return data
 
 
@@ -19,7 +19,7 @@ class ModelAmenitySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Amenity
-        fields = '__all__'
+        fields = "__all__"
 
     def create(self, validated_data):
         amenity, _ = Amenity.objects.get_or_create(**validated_data)
@@ -29,40 +29,39 @@ class ModelAmenitySerializer(serializers.ModelSerializer):
 class ModelEmailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Email
-        fields = '__all__'
+        fields = "__all__"
 
     def to_internal_value(self, data):
-        data['condo'] = self.context.get('condo')
+        data["condo"] = self.context.get("condo")
         return data
 
 
 class ModelPhoneSerializer(serializers.ModelSerializer):
     class Meta:
         model = Phone
-        fields = '__all__'
+        fields = "__all__"
 
     def to_internal_value(self, data):
-        data['condo'] = self.context.get('condo')
+        data["condo"] = self.context.get("condo")
         return data
 
 
 class ModelOrganizationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Organization
-        fields = '__all__'
+        fields = "__all__"
 
     def validate(self, attr):
-        if not any((attr.get('title'), attr.get('name'))):
-            raise ValidationError('At least one field is required')
+        if not any((attr.get("title"), attr.get("name"))):
+            raise ValidationError("At least one field is required")
         return attr
 
     def to_internal_value(self, data):
-        data['condo'] = self.context.get('condo')
+        data["condo"] = self.context.get("condo")
         return data
 
 
 class ModelCondoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Condo
-        exclude = ['amenities']
-
+        exclude = ["amenities"]
