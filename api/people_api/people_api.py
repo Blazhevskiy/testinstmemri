@@ -1,10 +1,14 @@
 from __future__ import print_function
+
+import logging
 import os.path
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from .parser import parser
+
+logger = logging.getLogger(__name__)
 
 
 class People_API():
@@ -33,48 +37,55 @@ class People_API():
     def get_contacts(self, service):
         results = service.people().connections().list(
             resourceName='people/me',
-            personFields='addresses,ageRanges,biographies,birthdays,calendarUrls,clientData,coverPhotos,emailAddresses,events,externalIds,genders,imClients,interests,locales,locations,memberships,metadata,miscKeywords,names,nicknames,occupations,organizations,phoneNumbers,photos,relations,sipAddresses,skills,urls,userDefined').execute()
+            personFields=(
+                'addresses,biographies,clientData,coverPhotos,emailAddresses,locales,locations,memberships,metadata,'
+                'miscKeywords,names,nicknames,occupations,organizations,phoneNumbers,photos,relations,sipAddresses,'
+                'urls,userDefined'
+            )
+        ).execute()
         condos_data = self.prepare_contacts_data(results.get('connections', []))
         return condos_data
 
     def prepare_contacts_data(self, raw_data):
         data = []
-        for condo_data in raw_data:
-            condo_description = condo_data['biographies'][0]['value']
-            parse_condo_description = parser.parse_description(condo_description)
+        for _data in raw_data:
+            try:
+                condo_description = _data['biographies'][0]['value']
+                parse_condo_description = parser.parse_description(condo_description)
 
-            name = condo_data['names'][0]['displayName']
-            picture = condo_data['photos'][0]['url']
-            street_name = condo_data['addresses'][0]['streetAddress']
-            street_address = condo_data['addresses'][0]['formattedValue'].replace('\n', ' ')
-            district = condo_data['addresses'][0]['region']
-            province = condo_data['addresses'][0]['city']
-            zip_code = condo_data['addresses'][0]['postalCode']
-            note = parse_condo_description['description']
-            description = condo_data['biographies'][0]['value']
-            condo_corp = parse_condo_description['building_info']['Condo Corp']
-            amenities = parse_condo_description['amenities']
-            floors = parse_condo_description['building_info']['Floors']
-            units = parse_condo_description['building_info']['Units']
-            date_completed = parse_condo_description['building_info']['Date Completed']
-            end_data = {'displayName': name,
-                        'picture': picture,
-                        'street_name': street_name,
-                        'street_address': street_address,
-                        'district': district,
-                        'province': province,
-                        'zip_code': zip_code,
-                        'note': note,
-                        'description': description,
-                        'amenities': amenities,
-                        'condo_corp': int(condo_corp),
-                        'floors': int(floors),
-                        'units': int(units),
-                        'view_floor_plans': "{'selected_pdf': ' ', 'all_pdf': []}"
-                        }
-            if date_completed:
-                end_data['date_completed'] = date_completed
-            data.append(end_data)
+                condo_data = {
+                    "condo": {
+                        'condo_name': _data['names'][0]['displayName'],
+                        'picture': _data['photos'][0].get('url') if _data.get('photos') else None,
+                        'description': parse_condo_description['description'],
+                        'condo_corp': parse_condo_description['building_info'].get('Condo Corp'),
+                        'floors': parse_condo_description['building_info'].get('Floors'),
+                        'units': parse_condo_description['building_info'].get('Units'),
+                        'date_completed': parse_condo_description['date_completed'],
+                        'modified_date': _data['metadata']['sources'][0].get('updateTime'),
+                        'view_floor_plans': "{'selected_pdf': ' ', 'all_pdf': []}",
+                    }
+                }
+                if _data.get('addresses'):
+                    condo_data["addresses"] = parser.parse_address(_data['addresses'])
+
+                if _data.get('phoneNumbers'):
+                    condo_data["phones"] = parser.parse_phone(_data['phoneNumbers'])
+
+                if _data.get('emailAddresses'):
+                    condo_data["emails"] = parser.parse_email(_data['emailAddresses'])
+
+                if _data.get('organizations'):
+                    condo_data["organizations"] = parser.parse_organization(_data['organizations'])
+
+                if parse_condo_description['amenities']:
+                    condo_data['amenities'] = parse_condo_description['amenities']
+
+
+                data.append(condo_data)
+
+            except Exception as e:
+                logger.error(f"Cannot parse condo. Error: {e}")
         return data
 
     def run(self):
