@@ -7,10 +7,8 @@ from google.oauth2.credentials import Credentials
 from .parser import parser
 
 
-
 class People_API():
     SCOPES = ['https://www.googleapis.com/auth/contacts.readonly']
-
 
     def get_credentials(self):
         creds = None
@@ -60,20 +58,20 @@ class People_API():
             units = parse_condo_description['building_info']['Units']
             date_completed = parse_condo_description['building_info']['Date Completed']
             end_data = {'displayName': name,
-                         'picture': picture,
-                         'street_name': street_name,
-                         'street_address': street_address,
-                         'district': district,
-                         'province': province,
-                         'zip_code': zip_code,
-                         'note': note,
-                         'description': description,
-                         'amenities': amenities,
-                         'condo_corp': int(condo_corp),
-                         'floors': int(floors),
-                         'units': int(units),
-                         'view_floor_plans': "{'selected_pdf': ' ', 'all_pdf': []}"
-                    }
+                        'picture': picture,
+                        'street_name': street_name,
+                        'street_address': street_address,
+                        'district': district,
+                        'province': province,
+                        'zip_code': zip_code,
+                        'note': note,
+                        'description': description,
+                        'amenities': amenities,
+                        'condo_corp': int(condo_corp),
+                        'floors': int(floors),
+                        'units': int(units),
+                        'view_floor_plans': "{'selected_pdf': ' ', 'all_pdf': []}"
+                        }
             if date_completed:
                 end_data['date_completed'] = date_completed
             data.append(end_data)
