@@ -9,6 +9,7 @@ from .serializer import (
     ModelPhoneSerializer,
     ModelAmenitySerializer,
     ModelOrganizationSerializer,
+    #ModelGroupSerializer,
 )
 from django.db import transaction
 from django.http import JsonResponse
@@ -64,6 +65,12 @@ def import_condos(request):
                     amenity_serializer.is_valid(raise_exception=True)
                     amenities = amenity_serializer.save()
                     condo.amenities.add(*amenities)
+
+                # if condo_data.get("groups"):
+                #     group_serializer = ModelGroupSerializer(data=condo_data["groups"], many=True)
+                #     group_serializer.is_valid(raise_exception=True)
+                #     groups = group_serializer.save()
+                #     condo.groups.add(*groups)
 
         except Exception as e:
             logger.error(f"Something went wrong! {e}")

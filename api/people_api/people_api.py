@@ -1,5 +1,6 @@
 from __future__ import print_function
 
+import time
 import logging
 import os.path
 from googleapiclient.discovery import build
@@ -34,20 +35,27 @@ class People_API:
         return service
 
     def get_contacts(self, service):
-        results = (
-            service.people()
-            .connections()
-            .list(
-                resourceName="people/me",
-                personFields=(
-                    "addresses,biographies,clientData,coverPhotos,emailAddresses,locales,locations,memberships,metadata,"
-                    "miscKeywords,names,nicknames,occupations,organizations,phoneNumbers,photos,relations,sipAddresses,"
-                    "urls,userDefined"
-                ),
+        next_page_token = None
+        while True:
+            results = (
+                service.people()
+                .connections()
+                .list(
+                    resourceName="people/me",
+                    personFields=(
+                        "addresses,biographies,clientData,coverPhotos,emailAddresses,locales,locations,memberships,metadata,"
+                        "miscKeywords,names,nicknames,occupations,organizations,phoneNumbers,photos,relations,sipAddresses,"
+                        "urls,userDefined"
+                    ),
+                    pageToken=next_page_token,
+                )
+                .execute()
             )
-            .execute()
-        )
-        condos_data = self.prepare_contacts_data(results.get("connections", []))
+            condos_data = self.prepare_contacts_data(results.get("connections", []))
+            next_page_token = results.get('nextPageToken', None)
+
+            if not next_page_token:
+                break
         return condos_data
 
     def prepare_contacts_data(self, raw_data):
@@ -84,6 +92,9 @@ class People_API:
 
                 if parse_condo_description["amenities"]:
                     condo_data["amenities"] = parse_condo_description["amenities"]
+
+                if _data.get("memberships"):
+                    condo_data["groups"] = parser.parse_groups(_data["memberships"])
 
                 data.append(condo_data)
 

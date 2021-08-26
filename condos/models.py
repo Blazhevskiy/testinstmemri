@@ -52,6 +52,16 @@ class Amenity(models.Model):
         return self.name
 
 
+class Group(models.Model):
+    group = models.CharField(max_length=64, unique=True)
+
+    class Meta:
+        ordering = ["group"]
+
+    def __str__(self):
+        return self.group
+
+
 class Email(models.Model):
     email = models.EmailField()
     condo = models.ForeignKey("Condo", related_name="email", on_delete=models.CASCADE)
@@ -82,7 +92,8 @@ class Condo(models.Model):
     condo_name = models.CharField(max_length=64)
     picture = models.CharField(max_length=500, blank=True, null=True)
     description = models.CharField(max_length=2000, blank=True)
-    amenities = models.ManyToManyField(Amenity)
+    amenities = models.ManyToManyField(Amenity, related_name='condo')
+    #groups = models.ManyToManyField(Group)
     building_type = models.IntegerField(null=True, blank=True)
     condo_corp = models.CharField(max_length=64, blank=True, null=True)
     floors = models.IntegerField(null=True, blank=True)

@@ -4,7 +4,10 @@ from datetime import datetime
 
 class Parser:
     def parse_description(self, description):
-        head, condo_description, *other = description.split("\n\n")
+        try:
+            head, condo_description, *other = description.split("\n\n")
+        except:
+            raise Exception
         params = []
         building_info = {}
         amenities = []
@@ -67,6 +70,12 @@ class Parser:
         result = []
         for organization in organizations:
             result.append({"title": organization.get("title"), "name": organization.get("name")})
+        return result
+
+    def parse_groups(self, groups):
+        result = []
+        for group in groups:
+            result.append({"group": group.get("contactGroupMembership")['contactGroupResourceName'].split('/')[1]})
         return result
 
 
