@@ -1,0 +1,122 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-07-13 15:46+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: DubaiOktoberfest/settings.py:159
+msgid "english"
+msgstr "английский"
+
+#: DubaiOktoberfest/settings.py:160
+msgid "russian"
+msgstr "русский"
+
+#: DubaiOktoberfest/settings.py:161
+msgid "spanish"
+msgstr "испанский"
+
+#: DubaiOktoberfest/settings.py:162
+msgid "german"
+msgstr "немецкий"
+
+#: customer/models.py:9 customer/serializer.py:44 customer/tests.py:58
+msgid "First name"
+msgstr "Имя"
+
+#: customer/models.py:10 customer/serializer.py:45
+msgid "Last name"
+msgstr "Фамилия"
+
+#: customer/models.py:11
+msgid "Email address"
+msgstr "Почта"
+
+#: customer/models.py:11 customer/serializer.py:46
+msgid "Email"
+msgstr "Почта"
+
+#: customer/models.py:23 customer/serializer.py:48
+msgid "Subscription"
+msgstr "Подписка"
+
+#: customer/models.py:24
+msgid "Language"
+msgstr "Язык"
+
+#: customer/serializer.py:49
+msgid "Password"
+msgstr "Пароль"
+
+#: customer/serializer.py:53
+msgid "Email must be unique"
+msgstr "Email должен быть уникальным"
+
+
+#: customer/serializer.py:63
+msgid "Password must contain at least one digit"
+msgstr "Пароль должен иметь хотябы одну цифру"
+
+#: customer/serializer.py:76
+msgid "User's refresh_token"
+msgstr "Токен обновления пользователя"
+
+#: customer/views.py:119
+msgid "Successfully logged out"
+msgstr "Успешный выход из системы"
+
+#: exceptions/internal_exceptions.py:64
+msgid "User inactive or deleted"
+msgstr "Пользователь неактивен или удален"
+
+#: exceptions/internal_exceptions.py:65
+msgid "Pair of Tokens are expired"
+msgstr "Срок действия пары токенов истек"
+
+#: exceptions/internal_exceptions.py:66
+msgid "Your password is expired and should be changed"
+msgstr "Срок действия вашего пароля истек, его необходимо изменить"
+
+#: exceptions/internal_exceptions.py:67
+msgid "Please obtain a login token first"
+msgstr "Пожалуйста, сначала получите токен для входа"
+
+#: exceptions/internal_exceptions.py:68
+msgid "Wrong login credentials. Please try again"
+msgstr "Неверные учетные данные для входа. Пожалуйста, попробуйте еще раз"
+
+#: exceptions/internal_exceptions.py:69
+msgid "Invalid Access token"
+msgstr "Недопустимый токен доступа"
+
+#: exceptions/internal_exceptions.py:70
+msgid "Access token expired"
+msgstr "Срок действия токена доступа истек"
+
+#: exceptions/internal_exceptions.py:76
+msgid "Invalid API version in URL path"
+msgstr "Неверная версия API в пути URL"
+
+#: exceptions/internal_exceptions.py:77
+msgid "Client software update required"
+msgstr "Требуется обновление клиентского программного обеспечения"
+
+#: exceptions/internal_exceptions.py:78
+msgid "Invalid 'platform' header"
+msgstr "Недействительный заголовок 'platform'"

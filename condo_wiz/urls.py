@@ -17,7 +17,60 @@ from django.contrib import admin
 from django.urls import path
 from condos import views
 
+from django.urls import path, include
+from django.conf import settings
+from drf_yasg.generators import OpenAPISchemaGenerator
+from rest_framework import routers
+from rest_framework.permissions import AllowAny
+
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
+from api.views import ManagementViewSet
+from customer.views import CustomerViewSet
+
+
+class CustomerGeneratorSchema(OpenAPISchemaGenerator):
+    def get_operation(self, *args, **kwargs):
+        operation = super().get_operation(*args, **kwargs)
+        min_app_version_header = openapi.Parameter(
+            name=settings.MIN_APP_VERSION_HEADER,
+            description="Header for min supporting app version",
+            required=True,
+            in_=openapi.IN_HEADER,
+            type=openapi.TYPE_STRING,
+            default='ios'
+        )
+        operation.parameters.append(min_app_version_header)
+        return operation
+
+
+schema_view = get_schema_view(
+   openapi.Info(
+      title="Oktoberfest APIs",
+      default_version='v1',
+      description="Test entire scope of APIs",
+   ),
+   public=True,
+   permission_classes=(AllowAny, ),
+   generator_class=CustomerGeneratorSchema
+)
+
+router = routers.SimpleRouter()
+router.trailing_slash = '/?'
+router.register(r'', CustomerViewSet, basename='customer')
+router.register(r'', ManagementViewSet, basename='management')
+
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/v1/import', views.import_condos),
+    path('api/v1/', include((router.urls, 'v1'), namespace='v1')),
 ]
+
+if settings.DEBUG:
+    urlpatterns += [
+        # Docs for APIs
+        path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+        path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+        path('admin/', admin.site.urls),
+        path('api/v1/import', views.import_condos),
+   ]
