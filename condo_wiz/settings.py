@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'condos',
     'api',
     'authorization',
-    'customer',
     'rest_framework',
     'rest_framework.authtoken',
     'drf_yasg',
@@ -110,7 +109,6 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',},
 ]
 
-AUTH_USER_MODEL = 'customer.Customer'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -152,7 +150,6 @@ REST_FRAMEWORK = {
 ACCESS_TOKEN_EXPIRATION = 60 * 60 * 24  # 24 hours
 REFRESH_TOKEN_EXPIRATION = 60 * 60 * 24 * 30  # 1 month
 
-AUTH_USER_MODEL = 'customer.Customer'
 
 DISABLE_CHECK_APP_VERSION = os.environ.get('DISABLE_CHECK_APP_VERSION', False)
 MIN_APP_VERSION_HEADER = 'platform'

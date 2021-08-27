@@ -1,11 +1,11 @@
 import os
 import binascii
 
+from django.contrib.auth.models import User
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
 
-from customer.models import Customer
 
 
 def set_refresh_token_time_expiration():
@@ -19,7 +19,7 @@ class RefreshToken(models.Model):
 
     key = models.CharField("Key", max_length=40, primary_key=True, help_text='Refresh token')
     user = models.OneToOneField(
-        Customer,
+        User,
         unique=True,
         verbose_name="Customer",
         related_name='refresh_token',

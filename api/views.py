@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib.auth.models import User
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -6,14 +7,14 @@ from rest_framework.permissions import AllowAny
 
 from condo_wiz.utils import get_header_by_name
 from api.serializer import EmptySerializer
-from customer.models import Customer
+
 
 
 class ManagementViewSet(viewsets.GenericViewSet):
     """
     The scope of management APIs
     """
-    queryset = Customer.objects.none()
+    queryset = User.objects.none()
     serializer_class = EmptySerializer
     pagination_class = None
 
