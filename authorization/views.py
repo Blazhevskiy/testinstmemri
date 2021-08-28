@@ -12,8 +12,8 @@ from rest_framework.response import Response
 
 from authorization.auth import delete_user_tokens
 from authorization.models import RefreshToken
-from customer.models import Customer
-from customer.serializer import (
+from django.contrib.auth.models import User
+from .serializer import (
     CustomerSerializer, LoginSerializer, CreateUserSerializer,
     GetTokensByRefreshTokenSerializer,
 )
@@ -21,7 +21,7 @@ from customer.serializer import (
 from django.utils.translation import ugettext_lazy as _
 
 class CustomerViewSet(viewsets.GenericViewSet):
-    queryset = Customer.objects.all()
+    queryset = User.objects.all()
     serializer_class = CustomerSerializer
     lookup_value_regex = "[0-9]+"
 

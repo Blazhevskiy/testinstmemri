@@ -2,9 +2,10 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
-from .models import Customer
+from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from rest_framework.exceptions import AuthenticationFailed, NotAuthenticated
+from .auth import RefreshTokenAuthentication
 
 
 class LoginSerializer(serializers.Serializer):
@@ -32,7 +33,7 @@ class LoginSerializer(serializers.Serializer):
 
 class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Customer
+        model = User
         fields = ["username", "email"]
 
 
@@ -42,7 +43,7 @@ class CreateUserSerializer(serializers.Serializer):
     password = serializers.CharField(required=True, help_text=_("Password"))
 
     def validate_email(self, value):
-        if Customer.objects.filter(email=value).exists():
+        if User.objects.filter(email=value).exists():
             raise ValidationError(_("Email must be unique"))
         return value
 
@@ -54,7 +55,19 @@ class CreateUserSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         password = validated_data.pop("password")
-        customer = Customer(**validated_data)
+        customer = User(**validated_data)
         customer.set_password(password)
         customer.save()
         return customer
+
+
+class GetTokensByRefreshTokenSerializer(serializers.Serializer):
+    refresh_token = serializers.CharField(required=True, help_text=_("User's refresh_token"))
+
+    def validate_refresh_token(self, value):
+        try:
+            RefreshTokenAuthentication().authenticate_credentials(value)
+        except AuthenticationFailed as e:
+            raise ValidationError(e)
+
+        return value

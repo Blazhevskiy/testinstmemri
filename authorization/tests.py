@@ -5,7 +5,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.test import APITestCase
 
 from authorization.models import RefreshToken
-from customer.models import Customer
+from django.contrib.auth.models import User
 
 
 class AuthenticationTest(APITestCase):
@@ -18,7 +18,7 @@ class AuthenticationTest(APITestCase):
 
     def test_login_customer(self):
         password = 'MyStrongPass1'
-        customer = mommy.make(Customer)
+        customer = mommy.make(User)
         customer.set_password(password)
         customer.save()
 
@@ -35,7 +35,7 @@ class AuthenticationTest(APITestCase):
 
     def test_logout_authorized_customer(self):
         url = reverse('v1:customer-logout')
-        customer = mommy.make(Customer)
+        customer = mommy.make(User)
         mommy.make(Token, user=customer)
 
         response = self.client.get(url, HTTP_AUTHORIZATION=f'Token {customer.auth_token.key}')
@@ -47,7 +47,7 @@ class AuthenticationTest(APITestCase):
 
     def test_get_new_tokens_by_refresh_token(self):
         url = reverse('v1:customer-new_tokens_by_refresh_token')
-        customer = mommy.make(Customer)
+        customer = mommy.make(User)
         refresh_token = mommy.make(RefreshToken, user=customer)
 
         response = self.client.post(url, data={'refresh_token': refresh_token.key})
@@ -59,7 +59,7 @@ class AuthenticationTest(APITestCase):
 
     def test_get_new_tokens_by_refresh_token_wrong_token(self):
         url = reverse('v1:customer-new_tokens_by_refresh_token')
-        customer = mommy.make(Customer)
+        customer = mommy.make(User)
         refresh_token = mommy.make(RefreshToken, user=customer)
 
         response = self.client.post(url, data={'refresh_token': refresh_token.key + '1'})

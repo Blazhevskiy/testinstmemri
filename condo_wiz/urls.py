@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+
+from authorization.views import CustomerViewSet
 from condos import views
 
 from django.urls import path, include
@@ -44,7 +46,7 @@ schema_view = get_schema_view(
 router = routers.SimpleRouter()
 router.trailing_slash = '/?'
 router.register(r'', ManagementViewSet, basename='management')
-
+router.register(r'', CustomerViewSet, basename='customer')
 
 urlpatterns = [
     path('api/v1/', include((router.urls, 'v1'), namespace='v1')),
